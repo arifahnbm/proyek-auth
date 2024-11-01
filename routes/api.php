@@ -24,6 +24,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/profile', [AuthController::class, 'updateProfile']);
 });
 
+
+//route untuk menghapus pengguna dengan otorisasi admin
+Route::middleware(['auth:sanctum', 'role:admin'])->delete('/admin/users/{id}', [AuthController::class, 'deleteUser']);
+
+//route untuk menmpilkan semua user yang hanya bisa diakses oleh admin
+Route::middleware(['auth:sanctum', 'role:admin'])->get('/admin/users', [AuthController::class, 'getAllUsers']);
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 

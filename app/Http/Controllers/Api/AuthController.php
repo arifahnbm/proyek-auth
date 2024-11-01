@@ -72,4 +72,33 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Profile updated successfully', 'user' => $user], 200);
     }
+
+    //method untuk menghapus pengguna
+    public function deleteUser(Request $request, $id)
+    {
+        
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        
+        if ($user->id === Auth::id()) {
+            return response()->json(['message' => 'You cannot delete your own account'], 403);
+        }
+
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully'], 200);
+    }
+
+    //method untuk menampilkan semua user
+    public function getAllUsers()
+    {
+        // Ambil semua pengguna dari database
+        $users = User::all();
+
+        return response()->json(['users' => $users], 200);
+    }
 }
